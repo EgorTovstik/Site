@@ -1,9 +1,39 @@
 from django import forms
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, PasswordResetForm, SetPasswordForm
+from django.contrib.auth.forms import AuthenticationForm, SetPasswordForm
 
 from .models import Profile
+
+
+class UserForgotPasswordForm(PasswordResetForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs.update({
+                'class': 'form-control',
+                'autocomplete': 'off',
+            })
+
+
+class UserSetNewPasswordForm(SetPasswordForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs.update({
+                'class': 'form-control',
+                'autocomplete': 'off',
+            })
+
+
+class UserPasswordChangeForm(SetPasswordForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs.update({
+                'class': 'form-control',
+                'autocomplete': 'off'
+            })
 
 
 class UserLoginForm(AuthenticationForm):
@@ -17,6 +47,7 @@ class UserLoginForm(AuthenticationForm):
                 'class': 'form-control',
                 'autocomplete': 'off'
             })
+
 
 class UserRegisterForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
