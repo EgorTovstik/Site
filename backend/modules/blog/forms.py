@@ -1,6 +1,17 @@
 from django import forms
 
-from .models import Article
+from .models import Article, Comment
+
+
+class CommentCreateForm(forms.ModelForm):
+    # Форма добавления комментария под статьей
+    parent = forms.IntegerField(widget=forms.HiddenInput, required=False)
+    content = forms.CharField(label='', widget=forms.Textarea(attrs={'cols': 30, 'row': 5, 'placeholder': 'Комментарии',
+                                                                     'class': 'form-control'}))
+
+    class Meta:
+        model = Comment
+        fields = ('content',)
 
 
 class ArticleCreateForm(forms.ModelForm):
